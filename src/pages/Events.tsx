@@ -1,13 +1,12 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../redux";
+import { useAppDispatch } from "../redux";
 import { addEvent } from "../redux/eventSlice";
 
 export const Events = () => {
   const [volunteerRoles, setVolunteerRoles] = useState([1]);
 
   const dispatch = useAppDispatch();
-  // const { events } = useAppSelector((state) => state.events);
 
   const formik = useFormik({
     initialValues: {
