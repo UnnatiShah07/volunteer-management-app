@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { SiReplit } from "react-icons/si";
-import { RxCodesandboxLogo } from "react-icons/rx";
+// import { SiReplit } from "react-icons/si";
+// import { RxCodesandboxLogo } from "react-icons/rx";
 
 export const Header: FC = () => {
   return (

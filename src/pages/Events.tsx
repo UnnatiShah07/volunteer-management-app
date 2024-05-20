@@ -7,7 +7,7 @@ export const Events = () => {
   const [volunteerRoles, setVolunteerRoles] = useState([1]);
 
   const dispatch = useAppDispatch();
-  const { events } = useAppSelector((state) => state.events);
+  // const { events } = useAppSelector((state) => state.events);
 
   const formik = useFormik({
     initialValues: {
