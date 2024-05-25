@@ -1,13 +1,14 @@
 import { useFormik } from "formik";
 import { VolunteerType, addVolunteer, deleteVolunteer, updateVolunteerData, useAppDispatch, useAppSelector } from "../redux";
 import { useState } from "react";
+import { setUpdatedEvents } from "../redux/eventSlice";
 
 export const Volunteer = () => {
   const [volunteerId, setVolunteerId] = useState<string>("");
-  const [viewVolunteer, setViewVolunteer] = useState<VolunteerType | null>(null);
 
   const dispatch = useAppDispatch();
   const { volunteers } = useAppSelector((state) => state.volunteer);
+  const { events } = useAppSelector((state) => state.events);
 
   const initialValues: VolunteerType = {
     name: "",
@@ -22,6 +23,7 @@ export const Volunteer = () => {
     preferedTime: [],
     skills: "",
     areaOfInterest: [],
+    eventHistory: [],
   };
 
   const handleAddVolunteer = () => {
@@ -32,6 +34,11 @@ export const Volunteer = () => {
       ...formik.values,
     };
     dispatch(addVolunteer(volunteer));
+    let updatedEvents = [...events];
+    formik.values.eventHistory.forEach((eventId) => {
+      updatedEvents = updatedEvents.map((evt) => (evt.id === eventId ? { ...evt, registeredVolunteer: [...evt?.registeredVolunteer, volunteer.id] } : evt));
+    });
+    dispatch(setUpdatedEvents(updatedEvents));
     formik.resetForm();
   };
 
@@ -142,6 +149,17 @@ export const Volunteer = () => {
               <option value="community-service">Community Service</option>
             </select>
           </div>
+
+          <div className="grid-item" style={{ gap: 0 }}>
+            <label>
+              <b>Events</b>
+            </label>
+            {events.map((event) => (
+              <label>
+                <input type="checkbox" name="eventHistory" value={event.id} checked={formik.values.eventHistory.includes(event?.id ?? "")} onChange={formik.handleChange} /> {event.name}
+              </label>
+            ))}
+          </div>
           <button type="submit">{volunteerId ? "Edit" : "Add"} Volunteer</button>
         </form>
 
@@ -161,9 +179,6 @@ export const Volunteer = () => {
                 <td>{volunteer.email}</td>
                 <td>{volunteer.phoneNumber}</td>
                 <td>
-                  <button onClick={() => setViewVolunteer(volunteer)}>View</button>
-                </td>
-                <td>
                   <button onClick={() => fillDataOfVolunteer(volunteer)}>Edit</button>
                 </td>
                 <td>
@@ -173,42 +188,6 @@ export const Volunteer = () => {
             ))}
           </tbody>
         </table>
-
-        {viewVolunteer && (
-          <div className="modal">
-            <div className="sub-modal">
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <p onClick={() => setViewVolunteer(null)}>✖️</p>
-              </div>
-              <div>
-                <p>
-                  <b>{viewVolunteer.name}</b>
-                </p>
-                <p>
-                  <b>Email:</b> {viewVolunteer.email}
-                </p>
-                <p>
-                  <b>Phine number:</b> {viewVolunteer.phoneNumber}
-                </p>
-                <p>
-                  <b>Address:</b> {viewVolunteer.address}
-                </p>
-                <p>
-                  <b>Availability:</b> {viewVolunteer.availabilityDays.join(", ")}
-                </p>
-                <p>
-                  <b>Timing:</b> {viewVolunteer.preferedTime.join(", ")}
-                </p>
-                <p>
-                  <b>Skills:</b> {viewVolunteer.skills}
-                </p>
-                <p>
-                  <b>Area of Interest:</b> {viewVolunteer.areaOfInterest.join(", ")}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

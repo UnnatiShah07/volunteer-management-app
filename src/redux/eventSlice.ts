@@ -7,6 +7,7 @@ export type EventType = {
   location: string;
   description: string;
   volunteerRoles: { id: number; role: string; requiredNumber: number }[];
+  registeredVolunteer: string[];
 };
 
 export type EventStateTypes = {
@@ -29,6 +30,7 @@ const initialState: EventStateTypes = {
         { id: 2, role: "Recycling Coordinator", requiredNumber: 20 },
         { id: 3, role: "Event Organizer", requiredNumber: 10 },
       ],
+      registeredVolunteer: ["V01", "V03"],
     },
     {
       id: "2",
@@ -41,6 +43,7 @@ const initialState: EventStateTypes = {
         { id: 2, role: "Distribution Assistant", requiredNumber: 25 },
         { id: 3, role: "Logistics Coordinator", requiredNumber: 15 },
       ],
+      registeredVolunteer: ["V02", "V04"],
     },
     {
       id: "3",
@@ -53,6 +56,7 @@ const initialState: EventStateTypes = {
         { id: 2, role: "Water Station Attendant", requiredNumber: 20 },
         { id: 3, role: "Finish Line Coordinator", requiredNumber: 10 },
       ],
+      registeredVolunteer: ["V01", "V05"],
     },
     {
       id: "4",
@@ -65,6 +69,7 @@ const initialState: EventStateTypes = {
         { id: 2, role: "Nurse", requiredNumber: 5 },
         { id: 3, role: "Refreshment Coordinator", requiredNumber: 7 },
       ],
+      registeredVolunteer: ["V02", "V04"],
     },
     {
       id: "5",
@@ -77,6 +82,7 @@ const initialState: EventStateTypes = {
         { id: 2, role: "Customer Assistance", requiredNumber: 30 },
         { id: 3, role: "Event Promotion", requiredNumber: 10 },
       ],
+      registeredVolunteer: ["V03", "V05"],
     },
   ],
   error: null,
@@ -97,8 +103,11 @@ export const eventSlice = createSlice({
       const { eventId } = action.payload;
       state.events = [...state.events].filter((event) => event.id !== eventId);
     },
+    setUpdatedEvents: (state, action) => {
+      state.events = action.payload;
+    },
   },
   extraReducers: (builder) => {},
 });
 
-export const { addEvent, updateEventData, deleteEvent } = eventSlice.actions;
+export const { addEvent, updateEventData, deleteEvent, setUpdatedEvents } = eventSlice.actions;

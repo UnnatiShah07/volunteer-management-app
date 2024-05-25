@@ -15,6 +15,7 @@ export type VolunteerType = {
   preferedTime: string[];
   skills: string;
   areaOfInterest: string[];
+  eventHistory: string[];
 };
 
 export type VolunteerStateTypes = {
@@ -25,7 +26,6 @@ export type VolunteerStateTypes = {
 
 const initialState: VolunteerStateTypes = {
   isLoading: false,
-  //   volunteers: JSON.parse(localStorage.getItem("volunteers") as string),
   volunteers: [
     {
       id: "V01",
@@ -37,6 +37,7 @@ const initialState: VolunteerStateTypes = {
       preferedTime: ["Morning", "Afternoon"],
       skills: "Event Planning, Teaching",
       areaOfInterest: ["Education", "Community Service"],
+      eventHistory: ["1", "3"],
     },
     {
       id: "V02",
@@ -48,6 +49,7 @@ const initialState: VolunteerStateTypes = {
       preferedTime: ["Evening"],
       skills: "First Aid, Childcare",
       areaOfInterest: ["Healthcare", "Youth Programs"],
+      eventHistory: ["2", "4"],
     },
     {
       id: "V03",
@@ -59,6 +61,7 @@ const initialState: VolunteerStateTypes = {
       preferedTime: ["Morning"],
       skills: "Cooking, Fundraising",
       areaOfInterest: ["Community Service", "Food Programs"],
+      eventHistory: ["5", "1"],
     },
     {
       id: "V04",
@@ -70,6 +73,7 @@ const initialState: VolunteerStateTypes = {
       preferedTime: ["Afternoon", "Evening"],
       skills: "Graphic Design, Social Media",
       areaOfInterest: ["Marketing", "Event Planning"],
+      eventHistory: ["2", "4"],
     },
     {
       id: "V05",
@@ -81,6 +85,7 @@ const initialState: VolunteerStateTypes = {
       preferedTime: ["Morning", "Afternoon"],
       skills: "Teaching, Mentoring",
       areaOfInterest: ["Education", "Youth Programs"],
+      eventHistory: ["5", "3"],
     },
   ],
   error: null,
@@ -92,17 +97,14 @@ export const volunteerSlice = createSlice({
   reducers: {
     addVolunteer: (state, action) => {
       state.volunteers.push(action.payload);
-      //   localStorage.setItem("volunteers", JSON.stringify(state.volunteers));
     },
     updateVolunteerData: (state, action) => {
       const { volunteerId, updatedVolunteer } = action.payload;
       state.volunteers = [...state.volunteers].map((voln) => (voln.id === volunteerId ? updatedVolunteer : voln));
-      //   localStorage.setItem("volunteers", JSON.stringify(state.volunteers));
     },
     deleteVolunteer: (state, action) => {
       const { volunteerId } = action.payload;
       state.volunteers = [...state.volunteers].filter((voln) => voln.id !== volunteerId);
-      //   localStorage.setItem("volunteers", JSON.stringify(state.volunteers));
     },
   },
   extraReducers: (builder) => {},
